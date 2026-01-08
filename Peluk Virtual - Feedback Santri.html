@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Peluk Virtual, Yuk! | Panduan & Kuis untuk Santri</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8f9ff;
+      --text: #5a5a72;
+      --accent: #b5a8d9;
+      --soft-pink: #f4c2c2;
+      --border: #e0e6f8;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding: 10px;
+    }
+
+    h1 {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 1.9rem;
+      color: #8a7faf;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      color: #9a8cb8;
+      margin-top: 8px;
+      font-style: italic;
+    }
+
+    .section {
+      display: none;
+    }
+
+    .active {
+      display: block;
+    }
+
+    .card {
+      background: white;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 26px;
+      box-shadow: 0 5px 15px rgba(181, 168, 217, 0.15);
+      border: 1px solid var(--border);
+    }
+
+    h2 {
+      font-size: 1.35rem;
+      margin-bottom: 16px;
+      color: #7a6da8;
+    }
+
+    p {
+      margin-bottom: 12px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 10px 22px;
+      border-radius: 24px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 8px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(181, 168, 217, 0.3);
+    }
+
+    .back-btn {
+      display: inline-block;
+      margin-top: 20px;
+      color: #8a7faf;
+      text-decoration: underline;
+      font-size: 0.95rem;
+    }
+
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      background-color: #fafbff;
+    }
+
+    #breathing-circle {
+      width: 150px;
+      height: 150px;
+      background: var(--soft-pink);
+      border-radius: 50%;
+      margin: 20px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(244, 194, 194, 0.4);
+    }
+
+    .emoji-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .emoji-btn {
+      background: #fdf2f8;
+      border: 2px solid #f0e6ff;
+      border-radius: 14px;
+      padding: 18px;
+      font-size: 2.1rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: 'Segoe UI', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+    }
+
+    .emoji-btn:hover {
+      background: #f0e6ff;
+      transform: scale(1.12);
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 0.9rem;
+      color: #a092c0;
+    }
+
+    @media (max-width: 600px) {
+      body { padding: 16px; }
+      h1 { font-size: 1.6rem; }
+      #breathing-circle {
+        width: 120px;
+        height: 120px;
+        font-size: 1rem;
+      }
+    }
+
+    /* --- STYLING RODA KEBAIKAN --- */
+    #wheel-container {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 30px auto;
+    }
+
+    #wheel-canvas {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      box-shadow: 0 8px 24px rgba(181, 168, 217, 0.2);
+    }
+
+    #wheel-pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 30px solid #5a5a72;
+      z-index: 10;
+    }
+
+    #wheel-result {
+      min-height: 60px;
+      font-style: italic;
+      color: #7a6da8;
+      margin: 20px 0;
+      padding: 15px;
+      border-radius: 12px;
+      background: #f9f7ff;
+      text-align: center;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      font-size: 1.05rem;
+      line-height: 1.5;
+    }
+
+    #wheel-result.show {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Halaman Utama -->
+  <div id="home" class="section active">
+    <header>
+      <h1>Peluk virtual, yuk! 🤗</h1>
+      <p class="subtitle">Aduh, jangan overthinking! Aku peluk kamu dulu 💕</p>
+    </header>
+
+    <main>
+      <div class="card">
+        <h2>🧘‍♀️ Cek Perasaanmu Hari Ini</h2>
+        <p>Kuis ini bantu kamu lebih paham diri sendiri—tanpa penilaian, tanpa beban. Hanya antara kamu dan hatimu.</p>
+        <a class="btn" onclick="showSection('quiz')">Mulai Kuis</a>
+      </div>
+
+      <div class="card">
+        <h2>💡 Tips Tenang ala Pesantren</h2>
+        <p>Gabungan psikologi positif dan nilai Islam biar hati adem.</p>
+        <a class="btn" onclick="showSection('tips')">Baca Tips</a>
+      </div>
+
+      <div class="card">
+        <h2>💌 Pesan untuk Dirimu</h2>
+        <p>Tulis sesuatu yang ingin kamu ingat nanti. Hanya kamu yang bisa lihat!</p>
+        <a class="btn" onclick="showSection('message')">Tulis Pesan</a>
+      </div>
+
+      <div class="card">
+        <h2>🌬️ Tarik Napas Bersama</h2>
+        <p>Latihan napas 4-7-8 biar hati tenang. Ikuti lingkarannya, ya!</p>
+        <a class="btn" onclick="showSection('breathe')">Mulai Napas</a>
+      </div>
+
+      <div class="card">
+        <h2>🎡 Putar Roda Kebaikan</h2>
+        <p>Klik, dan dapatkan kutipan penyemangat dari Al-Qur’an, hadis, atau psikologi!</p>
+        <a class="btn" onclick="showSection('wheel')">Putar Sekarang</a>
+      </div>
+
+      <div class="card">
+        <h2>🌸 Gemasi Hati</h2>
+        <p>Pilih emoji yang mewakili perasaanmu hari ini. Aku kasih respon manis!</p>
+        <a class="btn" onclick="showSection('gemas')">Coba Sekarang</a>
+      </div>
+
+      <div class="card">
+        <h2>📝 Saran & Rating</h2>
+        <p>Punya masukan? Bantu kami jadi lebih hangat dan bermanfaat!</p>
+        <a class="btn" onclick="showSection('feedback')">Kirim Saran</a>
+      </div>
+    </main>
+  </div>
+
+  <!-- Halaman Kuis -->
+  <div id="quiz" class="section">
+    <header>
+      <h1>Kuis Self-Check Hati</h1>
+      <p class="subtitle">Jawab dari hati, ya—ini ruang aman buat dirimu sendiri 💖</p>
+    </header>
+
+    <div class="card">
+      <h2>1. Seberapa sering kamu memikirkan hal yang belum terjadi?</h2>
+      <p>
+        <label><input type="radio" name="q1" value="1"> Hampir tidak pernah</label><br>
+        <label><input type="radio" name="q1" value="2"> Kadang-kadang</label><br>
+        <label><input type="radio" name="q1" value="3"> Sering</label><br>
+        <label><input type="radio" name="q1" value="4"> Hampir sepanjang waktu</label>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>2. Saat lelah, siapa yang pertama kamu cari?</h2>
+      <p>
+        <label><input type="radio" name="q2" value="1"> Allah (shalat, zikir, curhat dalam doa)</label><br>
+        <label><input type="radio" name="q2" value="2"> Teman dekat</label><br>
+        <label><input type="radio" name="q2" value="3"> Waktu sendiri (buku, musik, diam)</label><br>
+        <label><input type="radio" name="q2" value="4"> Media sosial / hiburan</label>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>3. Cara kamu "isi baterai" iman itu lewat?</h2>
+      <p>
+        <label><input type="radio" name="q3" value="1"> Tadarus & khatam Al-Qur’an</label><br>
+        <label><input type="radio" name="q3" value="2"> Nonton ceramah atau kajian</label><br>
+        <label><input type="radio" name="q3" value="3"> Menolong orang lain</label><br>
+        <label><input type="radio" name="q3" value="4"> Shalat malam / qiyamul lail</label>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>4. Saat cemas, apakah kamu sulit fokus belajar atau ibadah?</h2>
+      <p>
+        <label><input type="radio" name="q4" value="1"> Tidak, aku bisa tenang</label><br>
+        <label><input type="radio" name="q4" value="2"> Agak sulit, tapi bisa diatasi</label><br>
+        <label><input type="radio" name="q4" value="3"> Sangat sulit</label>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>5. Seberapa sering kamu mengapresiasi dirimu sendiri?</h2>
+      <p>
+        <label><input type="radio" name="q5" value="1"> Sering—aku tahu aku sudah berusaha</label><br>
+        <label><input type="radio" name="q5" value="2"> Kadang-kadang</label><br>
+        <label><input type="radio" name="q5" value="3"> Jarang—aku selalu merasa kurang</label><br>
+        <label><input type="radio" name="q5" value="4"> Hampir tidak pernah</label>
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>6. Apa yang paling kamu butuhkan hari ini?</h2>
+      <p>
+        <label><input type="radio" name="q6" value="1"> Pelukan hangat</label><br>
+        <label><input type="radio" name="q6" value="2"> Kata-kata penyemangat</label><br>
+        <label><input type="radio" name="q6" value="3"> Waktu istirahat</label><br>
+        <label><input type="radio" name="q6" value="4"> Keyakinan bahwa Allah sayang padaku</label>
+      </p>
+    </div>
+
+    <a class="btn" onclick="submitQuiz()">Lihat Refleksi</a>
+    <a class="back-btn" onclick="showSection('home')">← Kembali ke beranda</a>
+  </div>
+
+  <!-- Tips -->
+  <div id="tips" class="section">
+    <header>
+      <h1>Tips Tenang ala Pesantren</h1>
+      <p class="subtitle">Dari Al-Qur'an, Hadis, dan Psikologi Positif</p>
+    </header>
+
+    <div class="card">
+      <h2>🫶 1. Tarik Napas, Lalu Ucapkan Ini</h2>
+      <p>
+        “<em>Hasbunallah wa ni’mal wakīl</em>” (QS. Ali Imran: 173).  
+        <br><br>
+        Napas dalam selama 4 detik turunkan stres—kombinasi iman & sains!
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>🌙 2. Tulis 3 Hal yang Kamu Syukuri</h2>
+      <p>
+        Rasulullah ﷺ: <em>“Barangsiapa tidak bersyukur kepada manusia, tidak bersyukur kepada Allah.”</em> (HR. Tirmidzi)  
+        <br><br>
+        Latihan syukur = hati lebih bahagia.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>🕯️ 3. Ambil “Me Time” Halal</h2>
+      <p>
+        Duduk tenang 5 menit baca Al-Ikhlas. Ini bukan malas—ini <strong>isi ulang jiwa</strong>.
+      </p>
+    </div>
+
+    <a class="back-btn" onclick="showSection('home')">← Kembali ke beranda</a>
+  </div>
+
+  <!-- Pesan untuk Diri Sendiri -->
+  <div id="message" class="section">
+    <header>
+      <h1>Pesan untuk Dirimu</h1>
+      <p class="subtitle">Tulis sesuatu yang ingin kamu ingat nanti 💕</p>
+    </header>
+
+    <div class="card">
+      <textarea id="userMessage" placeholder="Contoh:&#10;‘Kamu sudah hebat hari ini.&#10;Jangan lupa minum air dan baca Al-Ikhlas.’" rows="4"></textarea>
+      <br>
+      <a class="btn" onclick="saveMessage()">Simpan Pesan</a>
+      <a class="back-btn" onclick="showSection('home')">← Kembali</a>
+    </div>
+
+    <div class="card" id="savedMessageCard" style="display:none;">
+      <h2>Pesan yang Kamu Simpan:</h2>
+      <p id="savedMessage" style="font-style: italic; color: #6a5a8c;"></p>
+      <a class="back-btn" onclick="showSection('home')">← Kembali ke beranda</a>
+    </div>
+  </div>
+
+  <!-- Tarik Napas -->
+  <div id="breathe" class="section">
+    <header>
+      <h1>🌬️ Tarik Napas Bersama</h1>
+      <p class="subtitle">Ikuti lingkaran: Tarik napas (4 detik) → Tahan (7 detik) → Buang napas (8 detik)</p>
+    </header>
+
+    <div class="card" style="text-align: center;">
+      <div id="breathing-circle">Tarik Napas</div>
+      <p id="breathing-text">Ready?</p>
+      <a class="btn" onclick="startBreathing()">Mulai</a>
+      <a class="back-btn" onclick="showSection('home')">← Kembali</a>
+    </div>
+  </div>
+
+  <!-- Roda Kebaikan (Versi Cantik + Suara) -->
+  <div id="wheel" class="section">
+    <header>
+      <h1>🎡 Putar Roda Kebaikan</h1>
+      <p class="subtitle">Dapatkan kutipan penyemangat dari Al-Qur'an, hadis, atau psikologi!</p>
+    </header>
+
+    <div class="card" style="text-align: center; padding: 20px;">
+      <div id="wheel-container">
+        <canvas id="wheel-canvas" width="280" height="280"></canvas>
+        <div id="wheel-pointer"></div>
+      </div>
+
+      <p id="wheel-result">Belum diputar...</p>
+
+      <a class="btn" onclick="spinWheel()">Putar Roda!</a>
+      <a class="back-btn" onclick="showSection('home')">← Kembali</a>
+    </div>
+  </div>
+
+  <!-- Gemasi Hati -->
+  <div id="gemas" class="section">
+    <header>
+      <h1>🌸 Gemasi Hati</h1>
+      <p class="subtitle">Pilih emoji yang mewakili perasaanmu hari ini</p>
+    </header>
+
+    <div class="card">
+      <div class="emoji-grid">
+        <div class="emoji-btn" onclick="gemasResponse('🙂')">🙂</div>
+        <div class="emoji-btn" onclick="gemasResponse('😢')">😢</div>
+        <div class="emoji-btn" onclick="gemasResponse('😤')">😤</div>
+        <div class="emoji-btn" onclick="gemasResponse('🥰')">🥰</div>
+        <div class="emoji-btn" onclick="gemasResponse('🥱')">🥱</div>
+        <div class="emoji-btn" onclick="gemasResponse('🌸')">🌸</div>
+      </div>
+      <p id="gemas-result" style="font-style: italic; min-height: 24px;"></p>
+      <a class="back-btn" onclick="showSection('home')">← Kembali ke beranda</a>
+    </div>
+  </div>
+
+  <!-- Saran & Rating -->
+  <div id="feedback" class="section">
+    <header>
+      <h1>Kirim Saran & Rating</h1>
+      <p class="subtitle">Bantu kami jadi lebih hangat dan bermanfaat! 💕</p>
+    </header>
+
+    <div class="card">
+      <h2>Rating (1–5)</h2>
+      <p>
+        <label><input type="radio" name="rating-local" value="5"> ⭐⭐⭐⭐⭐ Sangat membantu</label><br>
+        <label><input type="radio" name="rating-local" value="4"> ⭐⭐⭐⭐ Lumayan</label><br>
+        <label><input type="radio" name="rating-local" value="3"> ⭐⭐⭐ Cukup</label><br>
+        <label><input type="radio" name="rating-local" value="2"> ⭐⭐ Kurang</label><br>
+        <label><input type="radio" name="rating-local" value="1"> ⭐ Tidak membantu</label>
+      </p>
+
+      <h2>Saran atau Masukan</h2>
+      <textarea id="localSaran" placeholder="Apa yang bisa kami perbaiki? 💬" rows="4"></textarea>
+
+      <br>
+      <a class="btn" onclick="submitLocalFeedback()">Kirim Saran</a>
+      <a class="back-btn" onclick="showSection('home')">← Kembali</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Dibuat dengan penuh doa untuk santri Wahid Hasyim 💕</p>
+  </footer>
+
+  <!-- Audio untuk suara roda -->
+  <audio id="spinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3" preload="auto"></audio>
+
+  <script>
+    // --- Navigasi ---
+    function showSection(id) {
+      document.querySelectorAll('.section').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+
+      if (id === 'message') {
+        const saved = localStorage.getItem('pelukVirtualMessage');
+        if (saved) {
+          document.getElementById('savedMessage').innerText = saved;
+          document.getElementById('savedMessageCard').style.display = 'block';
+        } else {
+          document.getElementById('savedMessageCard').style.display = 'none';
+        }
+      }
+    }
+
+    // --- Kuis ---
+    function submitQuiz() {
+      const answers = {};
+      for (let i = 1; i <= 6; i++) {
+        const val = document.querySelector(`input[name="q${i}"]:checked`)?.value;
+        if (!val) {
+          alert("Jangan lupa isi semua pertanyaan, ya!");
+          return;
+        }
+        answers[`q${i}`] = val;
+      }
+
+      let message = "";
+      const dekatAllah = (answers.q2 === "1") || (["1","2","4"].includes(answers.q3));
+      const butuhSpiritual = (answers.q6 === "4");
+
+      if (dekatAllah && butuhSpiritual) {
+        message = "Allah tahu kamu sedang berusaha. Teruslah dekat dengan-Nya—Dia tak pernah jauh dari hati yang rindu.";
+      } else if (dekatAllah) {
+        message = "Subhanallah, kamu punya hubungan indah dengan Rabb-mu. Jangan pernah lelah mempereratnya.";
+      } else if (butuhSpiritual) {
+        message = "Hatimu sedang mencari ketenangan dari-Nya. Mulai dari hal kecil: satu ayat, satu doa, satu napas dalam nama Allah.";
+      } else {
+        message = "Kamu sedang menghadapi banyak hal, ya? Jangan lupa: Allah mencintaimu **lebih dari yang kamu kira**. Coba curhat ke Dia hari ini.";
+      }
+
+      alert("💬 Refleksi untukmu:\n\n" + message + "\n\nIngat: lelahmu tak pernah sia-sia di sisi-Nya.");
+      showSection('home');
+    }
+
+    function saveMessage() {
+      const msg = document.getElementById('userMessage').value.trim();
+      if (msg === '') {
+        alert("Jangan kosong, ya! Tulis sesuatu yang manis 💕");
+        return;
+      }
+      localStorage.setItem('pelukVirtualMessage', msg);
+      document.getElementById('savedMessage').innerText = msg;
+      document.getElementById('savedMessageCard').style.display = 'block';
+      alert("Pesan tersimpan! Kamu bisa baca lagi kapan saja di sini.");
+    }
+
+    // Tarik Napas
+    let breathingStep = 0;
+    let breathingInterval;
+    const breathingPhases = [
+      { text: "Tarik Napas", duration: 4, color: "#b5a8d9" },
+      { text: "Tahan", duration: 7, color: "#f4c2c2" },
+      { text: "Buang Napas", duration: 8, color: "#a8c9f4" }
+    ];
+
+    function startBreathing() {
+      breathingStep = 0;
+      clearInterval(breathingInterval);
+      runBreathingPhase();
+    }
+
+    function runBreathingPhase() {
+      if (breathingStep >= breathingPhases.length) {
+        breathingStep = 0;
+        document.getElementById('breathing-text').innerText = "Selesai! Alhamdulillah 💕";
+        document.getElementById('breathing-circle').innerText = "✨";
+        return;
+      }
+
+      const phase = breathingPhases[breathingStep];
+      const circle = document.getElementById('breathing-circle');
+      const textEl = document.getElementById('breathing-text');
+
+      circle.innerText = phase.text;
+      circle.style.background = phase.color;
+      textEl.innerText = `Selama ${phase.duration} detik...`;
+
+      let timeLeft = phase.duration;
+      breathingInterval = setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) {
+          clearInterval(breathingInterval);
+          breathingStep++;
+          runBreathingPhase();
+        } else {
+          textEl.innerText = `...${timeLeft} detik`;
+        }
+      }, 1000);
+    }
+
+    // --- Roda Kebaikan dengan Canvas & Suara ---
+    const quotes = [
+      "“Dan barangsiapa bertawakkal kepada Allah, niscaya Allah akan mencukupkan (keperluannya).” — QS. At-Talaq: 3",
+      "“Sesungguhnya bersama kesulitan ada kemudahan.” — QS. Al-Insyirah: 5",
+      "“Janganlah kamu bersedih, sesungguhnya Allah bersama kita.” — QS. At-Taubah: 40",
+      "Rasulullah ﷺ bersabda: “Sesungguhnya Allah lebih sayang kepada hamba-Nya daripada ibu kepada anaknya.” (HR. Muslim)",
+      "Jangan bandingkan hari ini dengan kemarin. Cukup tanya: apakah hari ini aku lebih dekat ke Allah?",
+      "Overthinking itu tanda kamu peduli. Tapi ingat: Allah lebih peduli daripada dirimu sendiri.",
+      "Istirahat bukan kemalasan. Bahkan Rasulullah ﷺ tidur siang.",
+      "Kamu nggak harus sempurna. Cukup jujur sama diri sendiri dan terus berusaha.",
+      "Allah tidak membebani seseorang melampaui kesanggupannya. — QS. Al-Baqarah: 286",
+      "Doa adalah senjata orang mukmin. Gunakanlah saat hati resah.",
+      "Jangan remehkan langkah kecilmu. Setiap huruf Al-Qur’an yang kau baca, Allah hitung sebagai kebaikan.",
+      "Kamu lelah? Itu karena kamu sedang naik, bukan jatuh. Teruslah melangkah."
+    ];
+
+    const colors = [
+      '#FF6F61', '#FFD166', '#06D6A0', '#118AB2', '#073B4C',
+      '#EF476F', '#FF9F1C', '#2EC4B6', '#011627', '#FDFFFC',
+      '#666666', '#CCCCCC'
+    ];
+
+    let isSpinning = false;
+    let currentAngle = 0;
+    let spinTimeout = null;
+
+    function drawWheel() {
+      const canvas = document.getElementById('wheel-canvas');
+      const ctx = canvas.getContext('2d');
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = Math.min(centerX, centerY) - 10;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      const anglePerSegment = (2 * Math.PI) / quotes.length;
+
+      for (let i = 0; i < quotes.length; i++) {
+        const startAngle = currentAngle + i * anglePerSegment;
+        const endAngle = startAngle + anglePerSegment;
+
+        ctx.beginPath();
+        ctx.moveTo(centerX, centerY);
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+        ctx.closePath();
+
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+
+        ctx.strokeStyle = '#fff';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // Center hole
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, radius * 0.2, 0, 2 * Math.PI);
+      ctx.fillStyle = '#fff';
+      ctx.fill();
+      ctx.strokeStyle = '#ddd';
+      ctx.stroke();
+    }
+
+    function spinWheel() {
+      if (isSpinning) return;
+      isSpinning = true;
+
+      const sound = document.getElementById('spinSound');
+      const resultEl = document.getElementById('wheel-result');
+
+      // Reset hasil
+      resultEl.innerText = "Mengacak...";
+      resultEl.classList.remove('show');
+
+      // Mainkan suara
+      sound.currentTime = 0;
+      sound.play().catch(e => console.log("Audio play blocked:", e));
+
+      // Rotasi acak (minimal 5 putaran + offset)
+      const extraRotations = 5;
+      const randomOffset = Math.floor(Math.random() * 360);
+      const totalRotation = extraRotations * 360 + randomOffset;
+
+      // Animasi putar
+      const startTime = Date.now();
+      const duration = 4000; // 4 detik
+
+      function animate() {
+        const elapsed = Date.now() - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+
+        // Easing function (ease-out)
+        const easedProgress = 1 - Math.pow(1 - progress, 3);
+
+        currentAngle = (totalRotation * easedProgress * Math.PI / 180) % (2 * Math.PI);
+        drawWheel();
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // Selesai putar — tampilkan hasil
+          const index = Math.floor((currentAngle * 180 / Math.PI) / (360 / quotes.length)) % quotes.length;
+          const selectedQuote = quotes[index];
+
+          resultEl.innerText = `"${selectedQuote}"`;
+          resultEl.classList.add('show');
+
+          isSpinning = false;
+        }
+      }
+
+      animate();
+    }
+
+    // Inisialisasi roda saat pertama kali dibuka
+    document.addEventListener('DOMContentLoaded', () => {
+      drawWheel();
+    });
+
+    // Gemasi Hati
+    const gemasResponses = {
+      '🙂': "Alhamdulillah, senyummu manis banget hari ini! 😊",
+      '😢': "Aduh, jangan sedih... sini peluk virtual! 🤗 Allah sayang sama kamu.",
+      '😤': "Kesel, ya? Tarik napas dulu... kamu nggak sendiri, kok.",
+      '🥰': "Wah, hatimu lagi penuh cinta nih! Jangan lupa syukuri ya 💖",
+      '🥱': "Ngantuk? Istirahat dulu, ya. Otakmu butuh recharge!",
+      '🌸': "Hatimu lagi mekar kayak bunga, nih! Semoga hari-harimu seindah ini 🌸"
+    };
+
+    function gemasResponse(emoji) {
+      document.getElementById('gemas-result').innerText = gemasResponses[emoji];
+    }
+
+    // Feedback Lokal
+    function submitLocalFeedback() {
+      const ratingEl = document.querySelector('input[name="rating-local"]:checked');
+      const saran = document.getElementById('localSaran').value.trim();
+
+      if (!ratingEl) {
+        alert("Jangan lupa pilih rating dulu, ya! 😊");
+        return;
+      }
+
+      const rating = ratingEl.value;
+      const stars = "⭐".repeat(rating);
+      localStorage.setItem('pelukVirtualFeedback', JSON.stringify({
+        rating, saran: saran || "Tidak ada saran", timestamp: new Date().toLocaleString('id-ID')
+      }));
+
+      alert(`Terima kasih sudah memberi ${stars}!\n\nKami senang kamu suka 💕\n*(Saran ini hanya tersimpan di perangkatmu sendiri.)*`);
+      showSection('home');
+    }
+  </script>
+
+</body>
+</html>
